@@ -63,6 +63,12 @@
           .domain(["Fastball", "Changeup", "Curveball", "Slider"]) 
           .range(["red", "green", "blue", "orange"]); 
 
+
+        var div = d3.select("body").append("div")   // we also want to display data upon the hovering
+                      .attr("class", "tooltip")
+                      .style("opacity", 0);
+
+
         svg.append('g')
           .selectAll("dot")
           .data(parsedData)
@@ -73,9 +79,43 @@
             .attr("r", 2)
             .attr("transform", "translate(" + 100 + "," + 100 + ")")
             .style("fill", function (d) { return colorScale(d['TaggedPitchType'])})
-          .on("mouseover", mouseover)
-          .on("mousemove", mousemove)
-          .on("mouseleave", mouseleave);
+
+            .on('mouseover', function (d, i) {
+                d3.select(this).transition()
+                  .duration('100')
+                  .attr("r", 7);          //increases the size of the point on hover
+
+
+            // lets make div appear 
+
+                div.transition()
+                    .duration(100)
+                    .style("opacity", 1); 
+
+                div.html(d.index)
+                  .style("left", (d3.event.pageX + 10) + "px")
+                  .style("top", (d3.event.pageY - 15) + "px");
+                
+            })         
+                
+            .on('mouseout', function (d, i) {
+              
+                d3.select(this).transition()
+                  .duration('200')
+                  .attr("r", 2);                    //Returns the size of the point when not hovering
+            
+            // lets make the div disappear just like the size
+
+                div.transition()
+                  .duration(100)
+                  .style("opacity", 0);
+
+            })
+          
+
+          
+        
+          ;
 
         svg.append("g")
          .attr("transform", "translate(" + 100 + "," + 300 + ")")
@@ -83,7 +123,9 @@
         
         svg.append("g")
           .attr("transform", "translate(" + 100 + "," + 100 + ")")
-          .call(d3.axisLeft(yScale));
+          .call(d3.axisLeft(yScale))
+          
+          ;
 
         svg.append('rect')
           .attr('x', xScale(-8.5/12))
@@ -93,7 +135,13 @@
           .attr('height', yScale(0) - yScale(2))
           .attr('stroke', 'black')
           .attr('fill', 'none')
-          .style('stroke-width', '2px');
+          .style('stroke-width', '2px')
+          
+          
+          
+          
+          
+          ;
     }
 
     fetchData();
@@ -101,9 +149,40 @@
 </script>
 
 <main>
-  <h1>Pitch Location Visualization</h1>
+
+  
+    <h1 style="font-family: 'Bebas Neue', sans-serif">Pitch Location Visualization</h1>
+    <hr style="width: 50%; margin: auto; margin-top: 5px; border-top: 2px solid black;">
+    <img src="assets/baseball.png" alt="Baseball Image" style="width: 100px; height: auto; position: absolute; bottom: 10px; left: 10px;">git
+
+    <style>
+
+        body {
+           
+            text-align: center; /* Center text horizontally */
+            background-color: RGB(255, 255, 255);
+            
+        
+        }
+
+    </style>
+
+
+
+    
+
+    
+
 </main>
 
 <style>
-  /* Write your CSS here */
+
+  @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+  body {
+    font-family: "Bebas Neue", sans-serif;
+  }  
+
+
+
 </style>
