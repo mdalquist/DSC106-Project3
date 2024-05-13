@@ -59,6 +59,10 @@
             .style("opacity", 0)
         }
 
+        var colorScale = d3.scaleOrdinal()
+          .domain(["Fastball", "Changeup", "Curveball", "Slider"]) 
+          .range(["red", "green", "blue", "orange"]); 
+
         svg.append('g')
           .selectAll("dot")
           .data(parsedData)
@@ -68,10 +72,28 @@
             .attr("cy", function (d) { return yScale(d['PlateLocHeight']); } )
             .attr("r", 2)
             .attr("transform", "translate(" + 100 + "," + 100 + ")")
-            .style("fill", "#CC0000")
+            .style("fill", function (d) { return colorScale(d['TaggedPitchType'])})
           .on("mouseover", mouseover)
           .on("mousemove", mousemove)
           .on("mouseleave", mouseleave);
+
+        svg.append("g")
+         .attr("transform", "translate(" + 100 + "," + 300 + ")")
+         .call(d3.axisBottom(xScale));
+        
+        svg.append("g")
+          .attr("transform", "translate(" + 100 + "," + 100 + ")")
+          .call(d3.axisLeft(yScale));
+
+        svg.append('rect')
+          .attr('x', xScale(-8.5/12))
+          .attr('y', yScale(3.5))
+          .attr("transform", "translate(" + 100 + "," + 100 + ")")
+          .attr('width', xScale(17/12) - xScale(0))
+          .attr('height', yScale(0) - yScale(2))
+          .attr('stroke', 'black')
+          .attr('fill', 'none')
+          .style('stroke-width', '2px');
     }
 
     fetchData();
