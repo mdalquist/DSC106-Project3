@@ -30,35 +30,6 @@
               .style('font-size', 12)
               .text('Pitch Height');
 
-        const tooltip = d3.select("#my_dataviz")
-          .append("div")
-          .style("opacity", 0)
-          .attr("class", "tooltip")
-          .style("background-color", "white")
-          .style("border", "solid")
-          .style("border-width", "1px")
-          .style("border-radius", "5px")
-          .style("padding", "10px")
-
-        const mouseover = function(event, d) {
-          tooltip
-            .style("opacity", 1)
-        }
-
-        const mousemove = function(event, d) {
-          tooltip
-            .html("Velocity: " + d['RelSpeed'])
-            .style("left", (event.x)/2 + "px") 
-            .style("top", (event.y)/2 + "px")
-        }
-
-        const mouseleave = function(event,d) {
-          tooltip
-            .transition()
-            .duration(200)
-            .style("opacity", 0)
-        }
-
         var colorScale = d3.scaleOrdinal()
           .domain(["Fastball", "Changeup", "Curveball", "Slider"]) 
           .range(["red", "green", "blue", "orange"]); 
@@ -67,7 +38,6 @@
         var div = d3.select("body").append("div")   // we also want to display data upon the hovering
                       .attr("class", "tooltip")
                       .style("opacity", 0);
-
 
         svg.append('g')
           .selectAll("dot")
@@ -80,7 +50,7 @@
             .attr("transform", "translate(" + 100 + "," + 100 + ")")
             .style("fill", function (d) { return colorScale(d['TaggedPitchType'])})
 
-            .on('mouseover', function (d, i) {
+            .on('mouseover', function (event, d) {
                 d3.select(this).transition()
                   .duration('100')
                   .attr("r", 7);          //increases the size of the point on hover
@@ -92,13 +62,16 @@
                     .duration(100)
                     .style("opacity", 1); 
 
-                div.html(d.index)
-                  .style("left", (d3.event.pageX + 10) + "px")
-                  .style("top", (d3.event.pageY - 15) + "px");
+                div.html('Batter: ' + d['Batter'] + '<br>Team: ' + d['BatterTeam'] + '<br>Pitch Type: ' 
+                        + d['TaggedPitchType'] + '<br>Velocity: ' + d['RelSpeed'] + '<br>Induced Vertical Break: '
+                        + d['InducedVertBreak'] + '<br>Horizontal Break: ' + d['HorzBreak'] + '<br>Pitch Result: '
+                        + d['PitchCall'] + '<br>Play Result: ' + d['PlayResult'])
+                  .style("left", (event.x + 10) + "px")
+                  .style("top", (event.y - 15) + "px");
                 
             })         
                 
-            .on('mouseout', function (d, i) {
+            .on('mouseout', function (event, d) {
               
                 d3.select(this).transition()
                   .duration('200')
@@ -154,6 +127,7 @@
     <h1 style="font-family: 'Bebas Neue', sans-serif">Pitch Location Visualization</h1>
     <hr style="width: 50%; margin: auto; margin-top: 5px; border-top: 2px solid black;">
     <img src="assets/baseball.png" alt="Baseball Image" style="width: 100px; height: auto; position: absolute; bottom: 10px; left: 10px;">git
+    <body></body>
 
     <style>
 
