@@ -126,7 +126,6 @@
   
     <h1 style="font-family: 'Bebas Neue', sans-serif">Pitch Location Visualization</h1>
     <hr style="width: 50%; margin: auto; margin-top: 5px; border-top: 2px solid black;">
-    <img src="assets/baseball.png" alt="Baseball Image" style="width: 100px; height: auto; position: absolute; bottom: 10px; left: 10px;">git
     <body></body>
 
     <style>
